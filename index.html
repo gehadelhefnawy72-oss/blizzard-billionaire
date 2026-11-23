@@ -1,91 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8">\n<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Snow Plow Empire: 40 Cities</title>
+<title>Blizzard Billionaire — 40 Cities</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-html,body{margin:0;height:100%;background:#0b1220;overflow:hidden;font-family:"Segoe UI",Tahoma,system-ui,sans-serif;touch-action:none;color:#fff}
-#c{position:fixed;inset:0;display:block}
-#touch{position:fixed;inset:0;z-index:2}
-.hud{position:fixed;z-index:5;pointer-events:none}
-.btn{pointer-events:auto;border:0;border-radius:14px;color:#fff;font-weight:800;font-size:16px;padding:10px 16px;cursor:pointer;font-family:inherit;background:#0ea5e9;box-shadow:0 5px 0 #0369a1}
-.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0369a1}
-.btn.sq{padding:10px 12px;min-width:46px;font-size:20px}
-.btn.off{background:#64748b;box-shadow:0 5px 0 #475569}
-.btn.gold{background:#f59e0b;box-shadow:0 5px 0 #b45309}
-#money{top:10px;left:10px;background:#0f172add;border:3px solid #fbbf24;border-radius:14px;padding:6px 14px;min-width:170px}
-#moneyTxt{font-size:26px;font-weight:900;color:#fde047;line-height:1.1}
-.bar{height:10px;background:#1e293b;border-radius:6px;overflow:hidden;margin-top:5px;border:1px solid #ffffff33}
+:root{--top:60px;--bottom:95px}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101827;color:#fff;font-family:system-ui,"Segoe UI",Arial,sans-serif;touch-action:none;direction:ltr!important}
+body *{direction:ltr!important}
+#c{position:fixed;left:0;right:0;top:var(--top);bottom:var(--bottom);width:100%;height:calc(100% - var(--top) - var(--bottom));display:block;z-index:1;background:#dceeff}
+#touch{position:fixed;left:0;right:0;top:var(--top);bottom:var(--bottom);z-index:2;touch-action:none;background:transparent}
+.hud{position:fixed;z-index:5;top:0;height:60px;display:flex;align-items:center;min-width:0}
+#money{left:0;width:31%;padding:5px 8px;gap:7px;background:linear-gradient(135deg,#15243a,#0d1728);border-bottom:2px solid #fbbf24}
+#moneyTxt{font-size:clamp(17px,4vw,23px);font-weight:950;color:#fde047;white-space:nowrap;line-height:1}
+#tankBox{flex:1;min-width:0}
+#tankBox .lbl{font-size:10px}
+.bar{height:8px;background:#26364b;border-radius:8px;overflow:hidden;border:1px solid #ffffff33}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#38bdf8,#e0f2fe)}
 #cleanFill{background:linear-gradient(90deg,#22c55e,#bef264)!important}
-.lbl{font-size:11px;color:#cbd5e1;margin-top:3px;display:flex;justify-content:space-between}
-#topC{top:10px;left:50%;transform:translateX(-50%);text-align:center;background:#0f172add;border:2px solid #ffffff33;border-radius:14px;padding:5px 18px;min-width:230px}
-#cityTxt{font-size:17px;font-weight:800}
-#multTxt{font-size:12px;color:#fde047;margin-top:1px}
-#topR{top:10px;right:10px;display:flex;gap:8px}
-#buffs{top:128px;left:10px;font-size:13px;font-weight:800;line-height:1.6;text-shadow:0 2px 0 #000}
-#nitroBtn{pointer-events:auto;position:fixed;right:26px;bottom:26px;width:104px;height:104px;border-radius:50%;border:0;z-index:6;font-size:38px;color:#fff;cursor:pointer;background:conic-gradient(#38bdf8 0deg,#1e293b 0deg);box-shadow:0 0 0 6px #0f172acc,0 6px 0 6px #0369a1}
-#nitroBtn span{position:absolute;inset:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#38bdf8,#0369a1);display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:30px;line-height:1}
-#nitroBtn small{font-size:11px;font-weight:900;letter-spacing:1px}
-#nitroBtn:active{transform:scale(.95)}
-#freezeBtn{pointer-events:auto;position:fixed;right:146px;bottom:30px;width:70px;height:70px;border-radius:50%;border:0;z-index:6;font-size:26px;background:#6366f1;box-shadow:0 5px 0 #3730a3;color:#fff;display:none;cursor:pointer}
-#freezeBtn small{display:block;font-size:10px;font-weight:900}
-#freezeBtn.cd{background:#475569;box-shadow:0 5px 0 #1e293b}
-#nextBtn{bottom:18px;left:50%;transform:translateX(-50%);pointer-events:auto;max-width:360px;font-size:15px;line-height:1.25;z-index:6;position:fixed}
-#nextBtn.ready{animation:glow 1s infinite alternate;background:#10b981;box-shadow:0 5px 0 #047857}
-@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.35)}}
-#toast{position:fixed;bottom:130px;left:50%;transform:translateX(-50%);z-index:7;background:#0f172ae6;color:#fff;padding:8px 18px;border-radius:12px;font-size:16px;font-weight:700;display:none;text-align:center;max-width:90vw;pointer-events:none;border:2px solid #38bdf8}
-#panel{position:fixed;inset:0;z-index:12;background:#020617cc;display:none;align-items:center;justify-content:center}
-#box{width:min(680px,95vw);max-height:92vh;overflow:auto;background:#0f172a;border:3px solid #38bdf8;border-radius:18px;padding:14px}
-#box.ar{direction:rtl}
-#box h2{margin:0 0 10px;font-size:22px;color:#7dd3fc;display:flex;justify-content:space-between;align-items:center}
-.row{display:flex;align-items:center;gap:10px;background:#1e293b;border-radius:12px;padding:8px 10px;margin-bottom:7px}
+.lbl{font-size:10px;color:#dbeafe;margin-top:2px;display:flex;justify-content:space-between;gap:3px;white-space:nowrap}
+#topC{left:31%;width:48%;padding:4px 7px;display:flex;flex-direction:column;justify-content:center;gap:2px;background:#17283e;border-bottom:2px solid #38bdf8;text-align:center}
+#cityTxt{font-size:clamp(12px,3vw,16px);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+#multTxt{font-size:10px;color:#fde047;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#cityProgress{width:calc(100% - 88px);align-self:flex-start;height:6px;background:#26364b;border-radius:8px;overflow:hidden}
+#cityProgress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22c55e,#bef264)}
+#topR{right:0;width:21%;justify-content:center;padding:4px;background:#15243a;border-bottom:2px solid #a78bfa}
+.btn{border:0;border-radius:12px;color:#fff;font-weight:900;font-size:clamp(11px,2.8vw,15px);padding:10px 9px;cursor:pointer;font-family:inherit;background:#0ea5e9;box-shadow:0 4px 0 #0369a1;white-space:nowrap}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0369a1}
+.btn.sq{padding:8px;min-width:38px;font-size:18px}
+.btn.off{background:#64748b;box-shadow:0 4px 0 #475569}
+.btn.gold{background:#f59e0b;box-shadow:0 4px 0 #b45309}
+#upBtn{width:100%;font-size:clamp(10px,2.7vw,14px);padding:9px 3px}
+#muteBtn{display:none}
+#buffs{position:fixed;top:64px;left:8px;z-index:4;font-size:11px;font-weight:800;line-height:1.4;text-shadow:0 2px 3px #000;pointer-events:none}
+#controls{position:fixed;left:0;right:0;bottom:0;height:95px;z-index:8;display:flex;align-items:center;justify-content:space-between;padding:4px 15px calc(4px + env(safe-area-inset-bottom));background:linear-gradient(180deg,#17283e,#0c1728);border-top:2px solid #3b526d}
+#joyBase{position:relative;flex:0 0 86px;width:86px;height:86px;margin:0;border-radius:50%;border:3px solid #a8c7e8;background:radial-gradient(circle,#34506d,#182c43);box-shadow:inset 0 0 0 5px #ffffff12,0 4px 12px #0008;display:block;pointer-events:auto;touch-action:none}
+#joyKnob{position:absolute;left:50%;top:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:linear-gradient(145deg,#fff,#9fc9ef);box-shadow:0 3px 8px #0008}
+#actionBtns{display:flex;align-items:center;gap:12px}
+.action{width:76px;height:76px;border:0;border-radius:22px;color:white;font-weight:1000;font-size:14px;line-height:1.1;box-shadow:0 5px 0 #0005;touch-action:none}
+#nitroBtn{background:linear-gradient(145deg,#38bdf8,#075985);font-size:27px}
+#nitroBtn small{display:block;font-size:10px;letter-spacing:.5px}
+#sellBtn{background:linear-gradient(145deg,#4ade80,#15803d);font-size:25px}
+#sellBtn small{display:block;font-size:10px}
+#nextBtn{position:absolute;right:5px;bottom:2px;max-width:42%;font-size:10px;padding:4px 7px;line-height:1.1;z-index:6}
+#nextBtn.ready{animation:glow 1s infinite alternate;background:#10b981;box-shadow:0 3px 0 #047857}
+@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.3)}}
+#toast{position:fixed;bottom:104px;left:50%;transform:translateX(-50%);z-index:10;background:#0f172aee;color:#fff;padding:8px 14px;border-radius:12px;font-size:14px;font-weight:800;display:none;text-align:center;max-width:88vw;pointer-events:none;border:2px solid #38bdf8}
+#panel{position:fixed;inset:0;z-index:20;background:#020617eF;display:none;align-items:stretch;justify-content:center;padding:10px}
+#box{width:min(680px,100%);height:100%;max-height:100%;overflow:auto;background:linear-gradient(160deg,#14243a,#0b1423);border:2px solid #38bdf8;border-radius:18px;padding:14px;overscroll-behavior:contain}
+#box h2{margin:0 0 12px;font-size:22px;color:#7dd3fc;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#14243a;padding:4px 0;z-index:2}
+.row{display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:9px;background:#20334b;border:1px solid #ffffff14;border-radius:14px;padding:12px 10px;margin-bottom:10px;min-height:86px}
 .row .ic{font-size:28px;width:38px;text-align:center}
-.row .nm{flex:1}
-.row .nm b{font-size:16px}
-.row .nm small{display:block;color:#94a3b8;font-size:12px}
-.pips{display:flex;gap:3px;margin-top:4px}
-.pips i{width:14px;height:6px;border-radius:3px;background:#334155}
+.row .nm{min-width:0;overflow-wrap:anywhere}
+.row .nm b{font-size:15px;display:block;line-height:1.2}
+.row .nm small{display:block;color:#c2d2e4;font-size:11px;line-height:1.25;margin-top:4px}
+.pips{display:flex;gap:3px;margin-top:5px}
+.pips i{width:12px;height:5px;border-radius:3px;background:#475569}
 .pips i.on{background:#fbbf24}
-.row .btn{min-width:118px;font-size:14px;padding:8px 10px}
-#joyBase{position:fixed;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:3px solid #ffffff66;background:#ffffff18;z-index:4;display:none;pointer-events:none}
-#joyKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:#ffffffcc}
-#fade{position:fixed;inset:0;background:#000;opacity:0;transition:opacity .5s;z-index:20;pointer-events:none}
-#rotate{display:none;position:fixed;inset:0;z-index:50;background:#0b1220;align-items:center;justify-content:center;text-align:center;font-size:22px;padding:30px;line-height:1.5}
-@media (orientation:portrait) and (pointer:coarse){#rotate{display:flex}}
+.row .btn{min-width:76px;max-width:100px;font-size:12px;padding:10px 7px;white-space:normal;overflow-wrap:anywhere}
+#fade{position:fixed;inset:0;background:#000;opacity:0;transition:opacity .5s;z-index:30;pointer-events:none}
+@media (min-width:700px){
+ #money{width:28%;padding-left:14px}#topC{left:28%;width:52%}#topR{width:20%}
+ #controls{padding-left:max(22px,calc((100vw - 700px)/2));padding-right:max(22px,calc((100vw - 700px)/2))}
+ #joyBase{width:90px;height:90px;flex-basis:90px}
+}
+@media (max-height:560px){
+ :root{--top:54px;--bottom:78px}
+ .hud{height:54px}#controls{height:78px}
+ #joyBase{width:68px;height:68px;flex-basis:68px}
+ .action{width:62px;height:62px;border-radius:18px}
+ #joyKnob{width:34px;height:34px;margin:-17px 0 0 -17px}
+}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
 <div id="touch"></div>
-<div id="joyBase"><div id="joyKnob"></div></div>
-
-<div class="hud" id="money"><div id="moneyTxt">$0</div>
-  <div class="bar"><i id="tankFill"></i></div><div class="lbl"><span id="tankLbl">Tank</span><span id="tankTxt"></span></div>
-  <div class="bar"><i id="cleanFill"></i></div><div class="lbl"><span id="cleanLbl">Clean</span><span id="cleanTxt"></span></div>
+<div class="hud" id="money">
+  <div id="moneyTxt">$0</div>
+  <div id="tankBox"><div class="bar"><i id="tankFill"></i></div><div class="lbl"><span id="tankLbl">TANK</span><span id="tankTxt">0/100</span></div></div>
 </div>
-<div class="hud" id="topC"><div id="cityTxt"></div><div id="multTxt"></div></div>
-<div class="hud" id="topR">
-  <button class="btn sq" id="muteBtn">🔊</button>
-  <button class="btn sq" id="langBtn">EN</button>
-  <button class="btn" id="upBtn">⬆ Upgrades</button>
+<div class="hud" id="topC">
+  <div id="cityTxt">📍 New York · 1/40</div>
+  <div id="multTxt">CITY PROGRESS</div>
+  <div id="cityProgress"><i id="cleanFill"></i></div>
+  <button class="btn off" id="nextBtn">NEXT CITY</button>
 </div>
+<div class="hud" id="topR"><button class="btn" id="upBtn">⬆ UPGRADES</button></div>
 <div class="hud" id="buffs"></div>
-<button id="freezeBtn">❄️<small id="freezeTxt">FREEZE</small></button>
-<button id="nitroBtn"><span>🔥<small id="nitroTxt">NITRO</small></span></button>
-<button class="btn off" id="nextBtn"></button>
+<div id="controls">
+  <div id="joyBase"><div id="joyKnob"></div></div>
+  <div id="actionBtns">
+    <button class="action" id="sellBtn">💵<small>SELL</small></button>
+    <button class="action" id="nitroBtn">🔥<small id="nitroTxt">NITRO</small></button>
+  </div>
+</div>
 <div id="toast"></div>
 <div id="panel"><div id="box"></div></div>
 <div id="fade"></div>
-<div id="rotate">🔄<br>Please rotate your device to landscape</div>
 
 <script src="https://game-cdn.poki.com/scripts/v2/poki-sdk.js"></script>
 <script>
 "use strict";
 /* ============================================================
-   SNOW PLOW EMPIRE: 40 CITIES  -  single file, no external assets
+   BLIZZARD BILLIONAIRE: 40 CITIES  -  responsive single file
    ============================================================ */
 const $=id=>document.getElementById(id);
 const clamp=(v,a,b)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t, rand=(a,b)=>a+Math.random()*(b-a);
@@ -137,7 +156,7 @@ const TXT={
 let S={money:0,city:0,lv:[0,0,0,0,0,0,0,0,0,0],lang:"en",mute:false};
 try{const sv=JSON.parse(localStorage.getItem("snowPlowEmpire")||"null");if(sv&&sv.lv)S=Object.assign(S,sv);}catch(e){}
 while(S.lv.length<10)S.lv.push(0);S.lv.length=10;
-if(S.lang!=="ar")S.lang="en";
+S.lang="en";
 S.city=clamp(S.city|0,0,39);
 const T=k=>(TXT[S.lang]&&TXT[S.lang][k])||TXT.en[k]||k;
 function save(){try{localStorage.setItem("snowPlowEmpire",JSON.stringify(S));}catch(e){}}
@@ -161,7 +180,7 @@ const helperCount=()=>S.lv[6]===0?0:Math.min(4,1+(((S.lv[6]-1)/3)|0));
 const cv=$("c"),ctx=cv.getContext("2d");
 let DPR=1,CW=0,CH=0,ZOOM=1;
 function resize(){
-  DPR=Math.min(2,window.devicePixelRatio||1);CW=innerWidth;CH=innerHeight;
+  DPR=Math.min(2,window.devicePixelRatio||1);CW=innerWidth;CH=Math.max(180,innerHeight-155);
   cv.width=Math.floor(CW*DPR);cv.height=Math.floor(CH*DPR);
   ZOOM=clamp(CW/950,.5,1.35);
 }
@@ -475,22 +494,24 @@ document.addEventListener("keydown",e=>{
   if(e.code==="KeyF")useFreeze();
 });
 document.addEventListener("keyup",e=>{keys[e.code]=false;});
-const tz=$("touch");let joyId=null,joyO=null;
-tz.addEventListener("pointerdown",e=>{
-  initAudio();if(!started)startGame();
-  if(joyId===null){joyId=e.pointerId;joyO={x:e.clientX,y:e.clientY};const jb=$("joyBase");jb.style.display="block";jb.style.left=e.clientX+"px";jb.style.top=e.clientY+"px";$("joyKnob").style.transform="translate(0,0)";try{tz.setPointerCapture(e.pointerId);}catch(x){}}
+const jb=$("joyBase");let joyId=null,joyO=null;
+jb.addEventListener("pointerdown",e=>{
+  e.preventDefault();initAudio();if(!started)startGame();
+  if(joyId===null){joyId=e.pointerId;const r=jb.getBoundingClientRect();joyO={x:r.left+r.width/2,y:r.top+r.height/2};try{jb.setPointerCapture(e.pointerId);}catch(x){}}
+  moveJoy(e);
 });
-tz.addEventListener("pointermove",e=>{
+function moveJoy(e){
   if(e.pointerId!==joyId)return;
-  let dx=(e.clientX-joyO.x)/55,dy=(e.clientY-joyO.y)/55;const l=Math.hypot(dx,dy);if(l>1){dx/=l;dy/=l;}
-  joy.x=dx;joy.y=dy;$("joyKnob").style.transform="translate("+(dx*45)+"px,"+(dy*45)+"px)";
-});
-function endJoy(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=joy.y=0;$("joyBase").style.display="none";}
-tz.addEventListener("pointerup",endJoy);tz.addEventListener("pointercancel",endJoy);
+  let dx=(e.clientX-joyO.x)/34,dy=(e.clientY-joyO.y)/34;const l=Math.hypot(dx,dy);if(l>1){dx/=l;dy/=l;}
+  joy.x=dx;joy.y=dy;$("joyKnob").style.transform="translate("+(dx*24)+"px,"+(dy*24)+"px)";
+}
+jb.addEventListener("pointermove",moveJoy);
+function endJoy(e){if(e.pointerId!==joyId)return;joyId=null;joy.x=joy.y=0;$("joyKnob").style.transform="translate(0,0)";}
+jb.addEventListener("pointerup",endJoy);jb.addEventListener("pointercancel",endJoy);
 const nb=$("nitroBtn");
 nb.addEventListener("pointerdown",e=>{e.preventDefault();initAudio();if(!started)startGame();nitroHeld=true;});
 for(const ev of ["pointerup","pointerleave","pointercancel"])nb.addEventListener(ev,()=>{nitroHeld=false;});
-$("freezeBtn").addEventListener("pointerdown",e=>{e.preventDefault();initAudio();useFreeze();});
+
 function useFreeze(){
   if(S.lv[8]<=0||freezeCD>0||freezeT>0)return;
   freezeT=15;freezeCD=Math.max(30,75-4*S.lv[8]);toast(T("frozen"),2200);sBell();
@@ -527,24 +548,34 @@ function travel(){
   });
 }
 $("nextBtn").onclick=travel;
+$("sellBtn").addEventListener("pointerdown",e=>{
+  e.preventDefault();initAudio();if(!started)startGame();
+  if(tank<=0){toast("Your tank is empty — plow some snow!",1800);return;}
+  const amount=Math.floor(tank*unitVal()*10)/10;
+  S.money+=amount;tank=0;save();sCoin();toast("SNOW SOLD  +$"+fmt(amount),1800);
+});
 $("muteBtn").onclick=()=>{initAudio();setMute(!S.mute);save();};
-$("langBtn").onclick=()=>{S.lang=S.lang==="en"?"ar":"en";applyLang();save();};
+
 function applyLang(){
-  $("langBtn").textContent=S.lang==="en"?"AR":"EN";
-  $("upBtn").textContent=T("upg");$("tankLbl").textContent=T("tank");$("cleanLbl").textContent=T("clean");
-  $("nitroTxt").textContent=T("nitro");$("freezeTxt").textContent=T("freeze");
-  $("box").className=S.lang==="ar"?"ar":"";
+  S.lang="en";
+  $("upBtn").textContent="⬆ UPGRADES";$("tankLbl").textContent="TANK";
+  $("nitroTxt").textContent="NITRO";
   if(panelOpen)renderPanel();
 }
 function openPanel(){panelOpen=true;paused=true;pokiCall("gameplayStop");$("panel").style.display="flex";renderPanel();}
 function closePanel(){panelOpen=false;paused=false;$("panel").style.display="none";pokiCall("gameplayStart");}
 $("upBtn").onclick=openPanel;
 function renderPanel(){
-  let h='<h2><span>'+T("title")+'  <small style="color:#fde047">$'+fmt(S.money)+'</small></span><button class="btn sq" id="closeP">✕</button></h2>';
-  UPG.forEach((u,i)=>{
-    const lv=S.lv[i],mx=lv>=MAXLV,c=upCost(i),ok=S.money>=c,tx=u[S.lang];
+  const names=[
+    ["🚜","Blade","Wider plow clears more snow."],
+    ["🛢️","Tank","Carry more snow before selling."],
+    ["⚡","Engine","Drive faster and recharge nitro quicker."]
+  ];
+  let h='<h2><span>🚜 UPGRADES <small style="color:#fde047">$'+fmt(S.money)+'</small></span><button class="btn sq" id="closeP">✕</button></h2>';
+  [0,1,2].forEach(i=>{
+    const lv=S.lv[i],mx=lv>=MAXLV,c=upCost(i),ok=S.money>=c;
     let pips="";for(let k=0;k<MAXLV;k++)pips+='<i class="'+(k<lv?"on":"")+'"></i>';
-    h+='<div class="row"><div class="ic">'+u.ic+'</div><div class="nm"><b>'+tx[0]+'</b> · '+T("lv")+' '+lv+'/'+MAXLV+'<small>'+tx[1]+'</small><div class="pips">'+pips+'</div></div><button class="btn'+((mx||!ok)?" off":"")+'" data-i="'+i+'">'+(mx?T("maxed"):"💵 "+fmt(c))+'</button></div>';
+    h+='<div class="row"><div class="ic">'+names[i][0]+'</div><div class="nm"><b>'+names[i][1]+' · Lv '+lv+'/'+MAXLV+'</b><small>'+names[i][2]+'</small><div class="pips">'+pips+'</div></div><button class="btn'+((mx||!ok)?" off":"")+'" data-i="'+i+'">'+(mx?"MAX":"$"+fmt(c))+'</button></div>';
   });
   $("box").innerHTML=h;
   $("closeP").onclick=closePanel;
@@ -1115,17 +1146,14 @@ function hud(dt){
   $("tankFill").style.width=(tank/cap*100).toFixed(0)+"%";
   $("tankTxt").textContent=Math.floor(tank)+" / "+cap;
   const cl=roadCells?(1-snowCnt/roadCells):1;
-  $("cleanFill").style.width=(cl*100).toFixed(0)+"%";$("cleanTxt").textContent=(cl*100).toFixed(0)+"%";
-  $("cityTxt").textContent="📍 "+CITIES[S.city]+"  ("+(S.city+1)+"/40)";
-  $("multTxt").textContent=T("profit")+" x"+cityMul().toFixed(2)+"  ·  +$"+fmt(unitVal())+" "+T("perUnit");
+  $("cleanFill").style.width=(cl*100).toFixed(0)+"%";
+  $("cityTxt").textContent="📍 "+CITIES[S.city]+" · "+(S.city+1)+"/40";
+  $("multTxt").textContent="CITY CLEANED "+(cl*100).toFixed(0)+"% · x"+cityMul().toFixed(1)+" CASH";
   const nbtn=$("nextBtn");
   if(S.city>=39){nbtn.textContent=T("max");nbtn.className="btn gold";}
   else{const c=travelCost();nbtn.textContent=T("next")+": "+CITIES[S.city+1]+"  💵 "+fmt(c);nbtn.className="btn"+(S.money>=c?" ready":" off");}
   const deg=Math.round(nitro/100*360);
   $("nitroBtn").style.background="conic-gradient("+(gold>0?"#facc15":"#38bdf8")+" "+(gold>0?360:deg)+"deg,#1e293b 0deg)";
-  const fb=$("freezeBtn");
-  if(S.lv[8]>0){fb.style.display="block";fb.className=(freezeCD>0||freezeT>0)?"cd":"";$("freezeTxt").textContent=freezeT>0?Math.ceil(freezeT)+"s":freezeCD>0?Math.ceil(freezeCD)+"s":T("freeze");}
-  else fb.style.display="none";
   const bf=[];
   if(gold>0)bf.push('<span style="color:#fde047">'+T("buffGold")+" "+Math.ceil(gold)+"s</span>");
   if(freezeT>0)bf.push('<span style="color:#7dd3fc">'+T("buffFreeze")+" "+Math.ceil(freezeT)+"s</span>");
